@@ -1,0 +1,75 @@
+<!-- 
+<button (click)="onTestGet()">Test Get Request</button>
+<p> Output: {{getData}}</p>
+<button (click)="onTestPost()">Test Post Request</button>
+<p> Output: {{postData}}</p>
+<button (click)="onTestGetPeople()">Test getPeople Request</button>
+
+    <ng-container *ngFor="let contact of getPeople">
+        <div>
+            <p>{{contact.firstName}} {{contact.lastName}}</p>
+            <br>
+        </div>
+    </ng-container>
+-->
+<div class="wrapper container">
+    <div class="row">
+        <div class="col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-sm-10 col-md-10 col-lg-10">
+            <p-table [columns]="cols" [value]="getPeople" [(contextMenuSelection)]="selectedContact" [contextMenu]="cm">
+                <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pContextMenuRow]="rowData">
+                            <td *ngFor="let col of columns">
+                                {{rowData[col.field]}}
+                            </td>
+                        </tr>
+                </ng-template>
+            </p-table>
+            <p-contextMenu #cm [model]="items" appendTo="body"></p-contextMenu>
+        </div>
+        <div class="col-sm-1 col-md-1 col-lg-1"></div>
+    </div>
+</div>
+<!-- Detail dialog -->
+<p-dialog header="Detail kontaktu" [(visible)]="displayDetailDialog" [modal]="true" [responsive]="true"
+ [width]="350" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+    <p>Meno: {{selectedContact.firstName}}</p>
+    <p>Priezvisko: {{selectedContact.lastName}}</p>
+    <p>E-mail: {{selectedContact.email}}</p>
+    <p-footer>
+        <button type="button" pButton (click)="displayDetailDialog=false" label="Ok"></button>
+    </p-footer>
+</p-dialog>
+<!-- Pridaj kontakt dialog -->
+<p-dialog header="Pridaj kontakt" [(visible)]="displayAddDialog" [modal]="true" [responsive]="true"
+ [width]="350" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+        <p>Meno:</p>
+        <input id="input" type="text" size="30" pInputText [(ngModel)]="inputFirstName">
+        <p>Priezvisko:</p>
+        <input id="input" type="text" size="30" pInputText [(ngModel)]="inputLastName">
+        <p>E-mail:</p>
+        <input id="input" type="text" size="30" pInputText [(ngModel)]="inputEmail">
+    <p-footer>
+        <button type="button" pButton (click)="displayAddDialog=false; createContactPost()" label="Ok"></button>
+    </p-footer>
+</p-dialog>
+<!-- Uprav kontakt dialog -->
+<p-dialog header="Pridaj kontakt" [(visible)]="displayEditDialog" [modal]="true" [responsive]="true"
+ [width]="350" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+        <p>Meno:</p>
+        <input id="input" type="text" size="30" pInputText [(ngModel)]="inputFirstName">
+        <p>Priezvisko:</p>
+        <input id="input" type="text" size="30" pInputText [(ngModel)]="inputLastName">
+        <p>E-mail:</p>
+        <input id="input" type="text" size="30" pInputText [(ngModel)]="inputEmail">
+    <p-footer>
+        <button type="button" pButton (click)="displayEditDialog=false; updateContact()" label="Ok"></button>
+    </p-footer>
+</p-dialog>
